@@ -10,7 +10,14 @@ module.exports = {
     },
 
     CreateNewRequest: async (req, res) => {
-        const answerer = await User.findOne({ email: req.body.answerer });
+        console.log(req.body);
+        let answerer;
+        try {
+            answerer = await User.findOne({ email: req.body.answerer });
+            console.log(answerer);
+        } catch (error) {
+            console.log(error);
+        }
 
         req.body.asker = req.user;
         req.body.answerer = answerer;
