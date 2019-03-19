@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const DBURL = process.env.MONGODB_URI || 'mongodb://localhost/code-review';
 
-console.log(DBURL);
+const Production_DB = "mongodb://heroku_wdpzsztg:prf9c9m8ucrgj119fv4d7f3cq4@ds155815.mlab.com:55815/heroku_wdpzsztg"
 
 assert = require('assert');
 

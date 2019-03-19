@@ -1,14 +1,15 @@
 const express = require('express')
     , expbhs = require('express-handlebars');
 
-require('./data/database');
 require('dotenv').config();
+require('./data/database');
 
 express()
     // View Engine Setup
+    .set('views', "./API/views")
     .engine('hbs', expbhs({ defaultLayout: 'main', extname: 'hbs' }))
     .set('view engine', 'hbs')
-    .use(express.static('public'))
+    .use(express.static('API/public'))
 
     // Form Middlewares
     .use(express.json())
@@ -26,4 +27,4 @@ express()
     // Page routes
     .use(require('./views/routes'))
 
-    .listen(process.env.PORT, console.log("Running code-review API on port 5000"));
+    .listen(process.env.PORT, console.log(`Running code-review API on port ${process.env.PORT}`));

@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const fs = require('fs');
 const RequireLogin = require('../middleware/require-login');
 
 router.get('/', (req, res) => {
