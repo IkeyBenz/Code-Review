@@ -5,3 +5,4 @@ router.get('/dashboard', RequireLogin, (req, res) => {
     res.render('home');
 });
 
+module.exports = router;

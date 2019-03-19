@@ -13,7 +13,8 @@ express()
     .use(require('cookie-parser')())
     .use(require('./middleware/check-auth'))
 
-    .use(require('./requests/request.routes'))
-    .use(require('./users/user.routes'))
+    .use('/api', require('./requests/request.routes'))
+    .use('/api', require('./users/user.routes'))
+    .use(require('./views/routes'))
 
     .listen(process.env.PORT, console.log("Running code-review API on port 5000"));
