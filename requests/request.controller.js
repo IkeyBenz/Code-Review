@@ -16,6 +16,8 @@ module.exports = {
             answerer = await User.findOne({ email: req.body.answerer });
             console.log(answerer);
         } catch (error) {
+            // If there is no user, send an email to `email` explaining that they should sign
+            // up for code-review in order to respond to this request for code-review.
             console.log(error);
         }
 
