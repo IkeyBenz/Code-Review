@@ -40,7 +40,7 @@ module.exports = {
                 if (req.is("application/json")) {
                     res.json({ success: `Your account has been created and you are signed in, ${user.name}.` })
                 } else {
-                    res.redirect(`/signup?successYour account has been created and you are signed in, ${user.name}.`);
+                    res.redirect(`/dashboard?success=Your account has been created and you are signed in, ${user.name}.`);
                 }
             }).catch(error => {
                 if (req.is("application/json")) {
@@ -83,9 +83,10 @@ module.exports = {
         });
     },
 
+    // Only used by Website, the cli uses it's own logic to log the user out
     SignOut: (req, res) => {
         res.clearCookie(process.env.COOKIE);
-        res.end();
+        res.redirect("/");
     }
 
 }
