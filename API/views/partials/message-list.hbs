@@ -1,0 +1,15 @@
+<ul class="list-group">
+
+    {{#each this}}
+
+    <div class="row py-2 border border-top-0">
+        <div class="col-sm-2 date">{{this.date_requested}}</div>
+        <div class="col-sm-3">{{this.asker.name}}</div>
+        <div class="col-md-4">{{this.subject}}</div>
+        <div class="col-sm-3 text-right">
+            <a href="/requests/{{this._id}}" class="btn btn-primary">Open</a>
+        </div>
+    </div>
+
+    {{/each}}
+</ul>

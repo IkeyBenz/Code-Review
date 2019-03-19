@@ -42,7 +42,11 @@ module.exports = {
 
     GetRequest: (req, res) => {
         Request.findById(req.params.id).then(request => {
-            res.json(request);
+            if (req.is("application/json")) {
+                res.json(request);
+            } else {
+                res.render("request-show", { request });
+            }
         }).catch(console.error)
     }
 

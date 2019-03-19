@@ -1,0 +1,26 @@
+<form action="/requests/{{request._id}}?_method=PATCH" class="container card px-0">
+
+    <div class="card-header d-flex justify-content-around">
+        <h4>{{request.asker.name}}</h4>
+        <h4>{{request.subject}}</h4>
+        <h4 class="date">{{request.date_requested}}</h4>
+    </div>
+
+    <div class="card-body">
+        <textarea name="cr_response" id="code" cols="30" rows="10">{{cr_request}}</textarea>
+    </div>
+
+    <div class="card-footer">
+        <button class="btn btn-success disabled">Send Feedback</button>
+    </div>
+</form>
+
+<script>
+
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        mode: "text/javascript",
+        matchBrackets: true
+    });
+
+</script>

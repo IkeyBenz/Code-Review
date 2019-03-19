@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
         const uid = jwt.decode(req.cookies[process.env.COOKIE])._id;
         User.findOne({ _id: uid }).then(user => {
             req.user = user;
-            console.log(req.user);
+            res.locals.authenticatedUser = user;
             next();
         });
     } else {
