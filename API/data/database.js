@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const DBURL = process.env.MONGODB_URI || 'mongodb://localhost/code-review';
+
+console.log(DBURL);
+
 assert = require('assert');
 
 // Allows every mongoose function to be treated as if they return a promise

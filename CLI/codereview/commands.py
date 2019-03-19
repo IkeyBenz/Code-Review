@@ -12,8 +12,8 @@ def signin():
     res = requests.post(API_URL + '/signin', data={
         "email": input("Email: "),
         "password": input("Password: ")
-    })
-
+    }, headers={ 'content-type': 'application/json' })
+    print(res.text)
     body = json.loads(res.text)
 
     if 'success' in body:
