@@ -7,22 +7,27 @@
     </div>
 
     <div class="card-body">
-        <textarea name="cr_response" id="code" cols="30" rows="10">{{request.cr_request}}</textarea>
+        <textarea name="cr_response" id="code">{{request.cr_request}}</textarea>
     </div>
 
     <div class="card-footer">
-        <button class="btn btn-success disabled">Send Feedback</button>
+        <button id="send-feedback-btn" class="btn btn-success disabled">Send Feedback</button>
     </div>
 </form>
 
-<input type="hidden" id="launguage-mode" value="{{request.language}}">
+<input type="hidden" id="language-mode" value="{{request.language}}">
 
 <script>
 
-    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    const editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         lineNumbers: true,
-        mode: $('#language-mode').val(),
+        mode: `text/${$('#language-mode').val()}`,
         matchBrackets: true
     });
+
+    editor.on("change", function () {
+        $('#send-feedback-btn').removeClass("disabled");
+    })
+
 
 </script>

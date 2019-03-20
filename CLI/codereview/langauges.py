@@ -5,6 +5,6 @@ def get_langauge_from_extention(ext):
     raise ValueError("File type " + ext + " is not supported yet.")
 
 languages = {
-    'js': 'javascript',
+    'js': 'text/javascript',
     'py': 'python'
 }
