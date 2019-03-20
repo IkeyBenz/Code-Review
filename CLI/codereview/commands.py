@@ -2,6 +2,7 @@ import requests
 import json
 import pickle
 import os
+from .langauges import get_langauge_from_extention
 
 API_URL = "https://code-review-api1.herokuapp.com"
 COOKIE_FILE_PATH = os.path.expanduser("~/code-review_data.pickle")
@@ -9,11 +10,11 @@ COOKIE_FILE_PATH = os.path.expanduser("~/code-review_data.pickle")
 def signin():
     ''' Gets email & password from user, sends post request to API_URL + /signin, stores cookies in COOKIE_FILE_PATH '''
     
-    res = requests.post(API_URL + '/signin', data={
+    res = requests.post(API_URL + '/signin', data=json.dumps({
         "email": input("Email: "),
         "password": input("Password: ")
-    }, headers={ 'content-type': 'application/json' })
-    print(res.text)
+    }), headers={'content-type': 'application/json'})
+
     body = json.loads(res.text)
 
     if 'success' in body:
@@ -74,16 +75,23 @@ def create_code_review_request():
     ''' Makes a post request to API_URL + /requests containing the code (to be reviewed) and the email address of the reviewer. '''
     if user_is_signed_in():
 
-        with open(_get_valid_filepath(), "r") as f:
+        filepath = _get_valid_filepath()
+
+        # The split by slashes protects against folders that have periods.
+        extention = filepath.split('/')[-1].split('.')[-1]
+
+        with open(filepath, "r") as f:
             code = f.read()
         
-        d = {
+        d = json.dumps({
             'cr_request': code,
-            'answerer': input("Email address of responder: ")
-        }
+            'answerer': input("Email address of responder: "),
+            'subject': input("Subject of review request: "),
+            'language': get_langauge_from_extention(extention)
+        })
 
         cookies = { 'code-review': get_stored_JWT() }
-        res = requests.post(API_URL + '/requests', cookies=cookies, data=d)
+        res = requests.post(API_URL + '/requests', cookies=cookies, data=d, headers={'content-type': 'application/json'})
         body = json.loads(res.text)
 
         if 'success' in body:
