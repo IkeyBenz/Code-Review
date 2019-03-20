@@ -11,13 +11,14 @@ const RequestSchema = new Schema({
     cr_response: { type: String, default: "" },                         // The code chunk that the reviewer sends back
     date_requested: { type: Date, default: Date.now() },                // The date that the request was created
     date_responded: { type: Date, default: null },                      // The date that the request was answered
-    opened: { type: Boolean, default: false }                           // Whether or not the recipient has opened the request
+    date_opened: { type: Date, default: null },                         // The date that the request was opened                      
+    status: { type: String, default: "Unopened" }                       // Unopened || Opened || Answered
 
 });
 
 RequestSchema.pre("findOne", function (next) {
-    this.populate("answerer");
-    this.populate("asker");
+    this.populate({ path: "answerer", name: "name" });
+    this.populate({ path: "asker", name: "name" });
     next();
 });
 

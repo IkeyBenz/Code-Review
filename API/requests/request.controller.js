@@ -47,8 +47,9 @@ module.exports = {
 
             // User needs to be authorized to view this request
             if (String(request.asker._id) == String(req.user._id) || String(request.answerer._id) == String(req.user._id)) {
-                if (!request.opened) {
-                    request.opened = true
+                if (request.status != "Opened") {
+                    request.status = "Opened";
+                    request.date_opened = Date.now();
                     await request.save();
                 }
 
