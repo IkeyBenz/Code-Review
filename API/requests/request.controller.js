@@ -40,14 +40,40 @@ module.exports = {
         });
     },
 
-    GetRequest: (req, res) => {
-        Request.findById(req.params.id).then(request => {
-            if (req.is("application/json")) {
-                res.json(request);
+    GetRequest: async (req, res) => {
+
+        try {
+            const request = await Request.findById(req.params.id);
+
+            // User needs to be authorized to view this request
+            if (String(request.asker._id) == String(req.user._id) || String(request.answerer._id) == String(req.user._id)) {
+                if (!request.opened) {
+                    request.opened = true
+                    await request.save();
+                }
+
+                if (req.is("application/json")) {
+                    res.json(request);
+                } else {
+                    res.render("request-show", { request });
+                }
+
             } else {
-                res.render("request-show", { request });
+                if (req.is("application/json")) {
+                    res.json({ error: "You do not have authorization to view this request." });
+                } else {
+                    res.redirect("/dashboard?error=You do not have authorization to view this request.");
+                }
             }
-        }).catch(console.error)
+
+        } catch (e) {
+            if (req.is("application/json")) {
+                res.json({ error: e.message });
+            } else {
+                res.redirect(`/dashboard?error=${e.message}`);
+            }
+        }
+
     }
 
 }

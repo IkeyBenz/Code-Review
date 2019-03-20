@@ -21,7 +21,7 @@
 
     const editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         lineNumbers: true,
-        mode: `text/${$('#language-mode').val()}`,
+        mode: $('#language-mode').val(),
         matchBrackets: true
     });
 
