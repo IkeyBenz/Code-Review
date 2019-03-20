@@ -6,7 +6,7 @@ commands = {
     'signin': signin,
     'signout': sign_out,
     'status': get_my_requests,
-    'create': create_code_review_request,
+    'request': create_code_review_request,
     'open': open_dashboard
 }
 
@@ -29,7 +29,7 @@ def describe():
         code-review signin: Signs you in.
         code-review signout: Signs you out.
         code-review status: Displays updates about your current review requests.
-        code-review request: Asks for an email address and a file path. Creates a 'code-review-request'.
+        code-review request: Asks for an email address, file path, subject, and language. Creates a 'code-review-request'.
         code-review open: Launches the user dashboard on code-review.com in your default browser
     ''')
 
