@@ -3,6 +3,7 @@ import json
 import pickle
 import os
 from .langauges import get_langauge_from_extention
+from .reuqest_formatter import format_requests
 
 API_URL = "https://code-review-api1.herokuapp.com"
 COOKIE_FILE_PATH = os.path.expanduser("~/code-review_data.pickle")
@@ -62,13 +63,11 @@ def get_my_requests():
         res = requests.get(API_URL + '/my-requests', cookies=cookies)
         body = json.loads(res.text)
 
-        print(body)
+        print(format_requests(body))
 
     else:
         print("You are not signed in. Run `codereview signin` to sign in.")
 
-def formatted_requests(res_body):
-    pass
 
 
 def create_code_review_request():
