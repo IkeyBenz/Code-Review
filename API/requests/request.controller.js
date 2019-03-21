@@ -92,6 +92,11 @@ module.exports = {
                     request.date_responded = Date.now();
                     await request.save();
                 }
+                // If the update contains an edited request from the asker, update the date_request_updated property
+                if (req.body.cr_request) {
+                    request.date_request_updated = Date.now();
+                    await request.save();
+                }
 
                 if (req.is("application/json")) {
                     res.json({ success: "Request successfully updated." });

@@ -23,6 +23,27 @@
         </div>
 
         <div class="card-body">
+            <div class="row">
+                <div class="col-5">
+                    <p>
+                        {{#ifEquals request.asker._id @root/authenticatedUser._id}}
+                        You: {{else}} {{request.asker.name}}:
+                        {{/ifEquals}}
+                        (Updated <span class="date">{{request.date_request_updated}}</span>)
+                    </p>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-6">
+                    <p>
+                        {{request.answerer.name}}:
+                        {{#ifEquals request.status "reviewed"}}
+                        (Reviewed {{request.date_responded}})
+                        {{else}}
+                        ({{request.status}})
+                        {{/ifEquals}}
+                    </p>
+                </div>
+            </div>
             <div id="code-differences">
 
             </div>
@@ -54,8 +75,8 @@
 <script>
 
     const mergeView = CodeMirror.MergeView(document.getElementById('code-differences'), {
-        orig: $('#request-code').text(),
-        value: $('#response-code').text() != '' ? $('#response-code').text() : $('#request-code').text(),
+        value: $('#request-code').text(),
+        orig: $('#response-code').text() != '' ? $('#response-code').text() : $('#request-code').text(),
         origLeft: null,
         mode: $('#language-mode').val(),
         highlightDifferences: true,
@@ -63,38 +84,5 @@
         collapseIdentical: false,
         showDifferences: true
     });
-
-    /*
-    const requestCodeEditor = CodeMirror.fromTextArea(document.getElementById("request-code"), {
-        lineNumbers: true,
-        matchBrackets: true,
-        mode: $('#language-mode').val(),
-        readOnly: true,
-    });
-
-    requestCodeEditor.setSize("50%", "550px");
-
-    const responseCodeEditor = requestCodeEditor.MergeView(document.getElementById("response-code"), {
-        lineNumbers: true,
-        matchBrackets: true,
-        mode: $('#language-mode').val(),
-        readOnly: $('#code-readonly').val() == 'true' ? true : false,
-    });
-
-    responseCodeEditor.setSize("50%", "550px");
-
-    const differenceView = CodeMirror.MergeView(document.getElementById("code-differences"), {
-        showDifferences: true
-    });
-    editor.on("change", function () {
-        $('#send-feedback-btn').removeClass("disabled").attr("disabled", false);
-        $('#code').text(editor.getValue());
-    });
-
-    */
-
-
-
-
 
 </script>
