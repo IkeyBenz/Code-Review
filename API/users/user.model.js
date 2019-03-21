@@ -32,7 +32,7 @@ UserSchema.methods.comparePassword = function (password, done) {
 
 UserSchema.pre("findOne", function (next) {
     this.populate({ path: "inbox", populate: { path: "asker", select: 'name' } });
-    this.populate({ path: "outbox", populate: { path: "answerer", select: "name" } });
+    this.populate({ path: "outbox", populate: { path: "answerer", select: 'name' } });
     this.populate("history");
     next();
 });

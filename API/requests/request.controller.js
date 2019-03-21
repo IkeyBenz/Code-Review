@@ -4,7 +4,6 @@ const User = require('../users/user.model');
 module.exports = {
 
     GetMyRequests: async (req, res) => {
-        console.log("Got here");
         const user = await req.user.populate('outbox');
         res.json(user);
     },
@@ -43,8 +42,7 @@ module.exports = {
     GetRequest: async (req, res) => {
 
         try {
-            const request = await Request.findById(req.params.id);
-
+            const request = await Request.findOne({ _id: req.params.id });
             // User needs to be authorized to view this request
             if (String(request.asker._id) == String(req.user._id) || String(request.answerer._id) == String(req.user._id)) {
                 if (request.status != "Opened") {
@@ -73,6 +71,51 @@ module.exports = {
             } else {
                 res.redirect(`/dashboard?error=${e.message}`);
             }
+        }
+
+    },
+
+    UpdateRequest: async (req, res) => {
+        console.log('Hey bruh we here')
+        try {
+            const request = await Request.findOne({ _id: req.params.id });
+
+            // If req.user is authorized to edit this request
+            if (String(request.asker._id) == String(req.user._id) || String(request.answerer._id) == String(req.user._id)) {
+
+                // Apply updates:
+                await Request.findOneAndUpdate({ _id: req.params.id }, req.body);
+
+                // If the update contains a response from the answerer, mark the status of this request 'reviewed'
+                if (req.body.cr_response) {
+                    request.status = 'reviewed';
+                    request.date_responded = Date.now();
+                    await request.save();
+                }
+
+                if (req.is("application/json")) {
+                    res.json({ success: "Request successfully updated." });
+                } else {
+                    res.redirect(`/requests/${req.params.id}?success=Request successfully updated.`);
+                }
+
+            } else {
+                if (req.is("application/json")) {
+                    res.json({ error: "You do not have authorization to edit this request." });
+                } else {
+                    res.redirect("/dashboard?error=You do not have authorization to edit that request.");
+                }
+            }
+
+
+        } catch (e) {
+
+            if (req.is("application/json")) {
+                res.json({ error: e.message });
+            } else {
+                res.redirect(`/requests/${req.params.id}?error=${e.message}`);
+            }
+
         }
 
     }

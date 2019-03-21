@@ -1,13 +1,20 @@
-const { CreateNewRequest, GetMyRequests, GetRequest } = require('./request.controller');
-const RequireLogin = require('../middleware/require-login');
+const { CreateNewRequest, GetMyRequests, GetRequest, UpdateRequest } = require('./request.controller');
 const RequestRouter = require('express').Router();
 
-// GET Inbox and Outbox requests for logged in user
-RequestRouter.get('/my-requests', RequireLogin, GetMyRequests);
+/** Every request to CRUD code-review requests require the user to be logged in. */
+RequestRouter.use(require('../middleware/require-login'));
 
-RequestRouter.get('/requests/:id', RequireLogin, GetRequest);
+/** GET Inbox and Outbox requests for logged in user */
+RequestRouter.get('/my-requests', GetMyRequests);
 
-// POST new request
-RequestRouter.post('/requests', RequireLogin, CreateNewRequest);
+/** GET Specific Request. login and authorization required */
+RequestRouter.get('/requests/:id', GetRequest);
+
+/** POST New Request. */
+RequestRouter.post('/requests', CreateNewRequest);
+
+/** UPDATE Request.  */
+RequestRouter.patch('/requests/:id', UpdateRequest);
+
 
 module.exports = RequestRouter;

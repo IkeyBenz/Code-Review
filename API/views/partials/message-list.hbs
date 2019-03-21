@@ -2,12 +2,19 @@
 
     {{#each this}}
 
-    <div class="row py-2 border border-top-0">
+    <div class="row mx-0 py-2 border border-top-0">
         <div class="col-sm-2 date">{{this.date_requested}}</div>
-        <div class="col-sm-3">{{this.asker.name}}</div>
+        <div class="col-sm-3">
+            {{this.answerer.name}}
+            {{this.asker.name}}
+        </div>
         <div class="col-md-4">{{this.subject}}</div>
         <div class="col-sm-3 text-right">
-            <a href="/requests/{{this._id}}" class="btn btn-primary">Open</a>
+            <a href="/requests/{{this._id}}" class="btn btn-light">
+                {{#ifEquals this.asker._id @root/authenticatedUser._id}}
+                {{#ifEquals this.status "reviewed"}}View Repsonse{{else}}Edit{{/ifEquals}}
+                {{else}}Open{{/ifEquals}}
+            </a>
         </div>
     </div>
 

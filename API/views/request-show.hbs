@@ -1,33 +1,100 @@
-<form action="/requests/{{request._id}}?_method=PATCH" class="container card px-0">
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Requests</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {{#ifEquals request.asker._id @root/authenticatedUser._id}}
+                Your Code{{else}}{{../request.asker.name}}'s Code
+                {{/ifEquals}}
+            </li>
+        </ol>
+    </nav>
 
-    <div class="card-header d-flex justify-content-around">
-        <h4>{{request.asker.name}}</h4>
-        <h4>{{request.subject}}</h4>
-        <h4 class="date">{{request.date_requested}}</h4>
-    </div>
+    <form action="/requests/{{request._id}}?_method=PATCH" method="POST" class="card px-0">
 
-    <div class="card-body">
-        <textarea name="cr_response" id="code">{{request.cr_request}}</textarea>
-    </div>
+        <div class="card-header d-flex justify-content-around">
+            <h4>
+                {{#ifEquals request.asker._id @root/authenticatedUser._id}}
+                To: {{../request.answerer.name}}{{else}}From: {{../request.asker.name}}
+                {{/ifEquals}}
+            </h4>
+            <h4>{{request.subject}}</h4>
+            <h4 class="date">{{request.date_requested}}</h4>
+        </div>
 
-    <div class="card-footer">
-        <button id="send-feedback-btn" class="btn btn-success disabled">Send Feedback</button>
-    </div>
-</form>
+        <div class="card-body">
+            <div id="code-differences">
 
-<input type="hidden" id="language-mode" value="{{request.language}}">
+            </div>
+        </div>
+
+        <div class="card-footer">
+            {{#ifEquals request.status "reviewed"}}
+            <button class="btn btn-success" type="submit">Archive</button>
+            {{else}}
+            <button id="send-feedback-btn" type="submit" disabled="true" class="btn btn-success disabled">
+                {{#ifEquals ../request.asker._id @root/authenticatedUser._id}}
+                Edit{{else}}Send Feedback
+                {{/ifEquals}}
+            </button>
+            {{/ifEquals}}
+        </div>
+    </form>
+
+    <input type="hidden" id="language-mode" value="{{request.language}}">
+    <input type="hidden" id="code-readonly"
+        value="{{#ifEquals request.status "reviewed"}}true{{else}}false{{/ifEquals}}">
+
+    <textarea id="request-code" class="d-none">{{request.cr_request}}</textarea>
+    <textarea id="response-code" name="cr_response" class="d-none">{{request.cr_response}}</textarea>
+
+</div>
+
 
 <script>
 
-    const editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        lineNumbers: true,
+    const mergeView = CodeMirror.MergeView(document.getElementById('code-differences'), {
+        orig: $('#request-code').text(),
+        value: $('#response-code').text() != '' ? $('#response-code').text() : $('#request-code').text(),
+        origLeft: null,
         mode: $('#language-mode').val(),
-        matchBrackets: true
+        highlightDifferences: true,
+        connect: 'align',
+        collapseIdentical: false,
+        showDifferences: true
     });
 
+    /*
+    const requestCodeEditor = CodeMirror.fromTextArea(document.getElementById("request-code"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: $('#language-mode').val(),
+        readOnly: true,
+    });
+
+    requestCodeEditor.setSize("50%", "550px");
+
+    const responseCodeEditor = requestCodeEditor.MergeView(document.getElementById("response-code"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: $('#language-mode').val(),
+        readOnly: $('#code-readonly').val() == 'true' ? true : false,
+    });
+
+    responseCodeEditor.setSize("50%", "550px");
+
+    const differenceView = CodeMirror.MergeView(document.getElementById("code-differences"), {
+        showDifferences: true
+    });
     editor.on("change", function () {
-        $('#send-feedback-btn').removeClass("disabled");
-    })
+        $('#send-feedback-btn').removeClass("disabled").attr("disabled", false);
+        $('#code').text(editor.getValue());
+    });
+
+    */
+
+
+
 
 
 </script>

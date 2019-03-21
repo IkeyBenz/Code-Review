@@ -7,7 +7,15 @@ require('./data/database');
 express()
     // View Engine Setup
     .set('views', "./API/views")
-    .engine('hbs', expbhs({ defaultLayout: 'main', extname: 'hbs' }))
+    .engine('hbs', expbhs({
+        defaultLayout: 'main',
+        extname: 'hbs',
+        helpers: {
+            'ifEquals': (val1, val2, opts) => {
+                return (String(val1) == String(val2)) ? opts.fn(this) : opts.inverse(this);
+            }
+        }
+    }))
     .set('view engine', 'hbs')
     .use(express.static('API/public'))
 
