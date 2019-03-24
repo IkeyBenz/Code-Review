@@ -1,0 +1,2 @@
+# Code-Review
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8023ca091ec549aeb57977cdb8cc1879)](https://app.codacy.com/app/IkeyBenz/Code-Review?utm_source=github.com&utm_medium=referral&utm_content=IkeyBenz/Code-Review&utm_campaign=Badge_Grade_Dashboard)
