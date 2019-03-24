@@ -1,6 +1,11 @@
-const { CreateNewRequest, GetMyRequests, GetRequest, UpdateRequest } = require('./request.controller');
+const express = require('express');
+
 const RequireLogin = require('../middleware/require-login');
-const RequestRouter = require('express').Router();
+
+const RequestRouter = express.Router();
+const {
+  CreateNewRequest, GetMyRequests, GetRequest, UpdateRequest,
+} = require('./request.controller');
 
 
 /** GET Inbox and Outbox requests for logged in user */

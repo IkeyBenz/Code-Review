@@ -27,7 +27,7 @@
                 <div class="col-5">
                     <p>
                         {{#ifEquals request.asker._id @root/authenticatedUser._id}}
-                        You: {{else}} {{request.asker.name}}:
+                        You: {{else}} {{../request.asker.name}}:
                         {{/ifEquals}}
                         (Updated <span class="date">{{request.date_request_updated}}</span>)
                     </p>
@@ -35,11 +35,17 @@
                 <div class="col-1"></div>
                 <div class="col-6">
                     <p>
-                        {{request.answerer.name}}:
+                        {{#ifEquals request.answerer._id @root/authenticatedUser._id}}
+                        You: {{else}}{{../request.answerer.name}}:
+                        {{/ifEquals}}
                         {{#ifEquals request.status "reviewed"}}
-                        (Reviewed {{request.date_responded}})
+                        (Reviewed {{../request.date_responded}})
                         {{else}}
-                        ({{request.status}})
+                        {{#ifEquals ../request.status "Opened"}}
+                        (Opened <span class="date">{{../request.date_opened}}</span>)
+                        {{else}}
+                        ({{../request.status}})
+                        {{/ifEquals}}
                         {{/ifEquals}}
                     </p>
                 </div>
@@ -76,13 +82,14 @@
 
     const mergeView = CodeMirror.MergeView(document.getElementById('code-differences'), {
         value: $('#request-code').text(),
-        orig: $('#response-code').text() != '' ? $('#response-code').text() : $('#request-code').text(),
-        origLeft: null,
+        origLeft: $('#response-code').text() != '' ? $('#response-code').text() : $('#request-code').text(),
+        origRight: null,
         mode: $('#language-mode').val(),
         highlightDifferences: true,
         connect: 'align',
         collapseIdentical: false,
-        showDifferences: true
+        showDifferences: true,
+        theme: 'material'
     });
 
 </script>

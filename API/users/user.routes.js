@@ -1,6 +1,5 @@
-const { SignUp, SignIn, SignOut } = require('./user.controller');
-
 const UserRouter = require('express').Router();
+const { SignUp, SignIn, SignOut } = require('./user.controller');
 
 
 UserRouter.post('/signup', SignUp);
