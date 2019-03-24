@@ -1,19 +1,19 @@
 const router = require('express').Router();
 const RequireLogin = require('../middleware/require-login');
 
-router.get('/', (req, res) => {
+router.get('/', (_, res) => {
   res.render('home');
 });
 
-router.get('/signin', (req, res) => {
+router.get('/signin', (_, res) => {
   res.render('signin');
 });
 
-router.get('/signup', (req, res) => {
+router.get('/signup', (_, res) => {
   res.render('signup');
 });
 
-router.get('/dashboard', RequireLogin, (req, res) => {
+router.get('/dashboard', RequireLogin, (_, res) => {
   res.render('dashboard');
 });
 
