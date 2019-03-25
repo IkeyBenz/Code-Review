@@ -13,7 +13,7 @@ const RequestSchema = new Schema({
   date_requested: { type: Date, default: Date.now() }, // The date that the request was created
   date_responded: { type: Date, default: null }, // The date that the request was answered
   date_opened: { type: Date, default: null }, // The date that the request was opened
-  status: { type: String, default: 'Unopened' }, // Unopened || Opened || Answered
+  status: { type: String, default: 'Unopened' }, // Unopened || Opened || Reviewed
   date_request_updated: { type: Date, default: Date.now() },
 
 });

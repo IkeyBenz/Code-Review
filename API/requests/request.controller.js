@@ -46,7 +46,7 @@ module.exports = {
       const isAsker = String(request.asker._id) === String(req.user._id);
       const isAnswerer = String(request.answerer._id) === String(req.user._id);
       if (isAsker || isAnswerer) {
-        if (request.status !== 'Opened') {
+        if (isAnswerer && request.status !== 'Opened') {
           request.status = 'Opened';
           request.date_opened = Date.now();
           await request.save();
@@ -85,7 +85,7 @@ module.exports = {
         // If the update contains a response from the answerer, mark the status of
         // this request 'reviewed'
         if (req.body.cr_response) {
-          request.status = 'reviewed';
+          request.status = 'Reviewed';
           request.date_responded = Date.now();
           await request.save();
         }
@@ -94,6 +94,13 @@ module.exports = {
         if (req.body.cr_request) {
           request.date_request_updated = Date.now();
           await request.save();
+
+          if (request.status === 'Opened') {
+            console.log("We're editing the status!");
+            request.status = 'Unopened';
+            request.date_opened = null;
+            await request.save();
+          }
         }
 
         if (req.is('application/json')) {

@@ -2,7 +2,7 @@
 <input type="hidden" id="code-readonly" value="{{#ifEquals request.status "reviewed"}}true{{else}}false{{/ifEquals}}">
 
 <textarea id="request-code" class="d-none">{{request.cr_request}}</textarea>
-<textarea id="response-code" name="cr_response" class="d-none">{{request.cr_response}}</textarea>
+<textarea id="response-code" class="d-none">{{request.cr_response}}</textarea>
 
 
 <div class="container-fluid">
@@ -45,14 +45,12 @@
                         {{#ifEquals request.answerer._id @root/authenticatedUser._id}}
                         You: {{else}}{{../request.answerer.name}}:
                         {{/ifEquals}}
-                        {{#ifEquals request.status "reviewed"}}
+                        {{#ifEquals request.status "Reviewed"}}
                         (Reviewed {{../request.date_responded}})
-                        {{else}}
-                        {{#ifEquals ../request.status "Opened"}}
+                        {{else}}{{#ifEquals ../request.status "Opened"}}
                         (Opened <span class="date">{{../request.date_opened}}</span>)
                         {{else}}
-                        ({{../request.status}})
-                        {{/ifEquals}}
+                        ({{../request.status}}){{/ifEquals}}
                         {{/ifEquals}}
                     </p>
                 </div>
