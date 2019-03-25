@@ -29,7 +29,7 @@ _For more examples and usage, please refer to the [Docs](https://code-review-api
 
 Isaac Benzaken – [@IkeyBenz](https://twitter.com/ikeyb21) – ikey.benz@gmail.com
 
-Distributed under the Creative Commons license. See ``LICENSE`` for more information.
+Distributed under the Apache license. See ``LICENSE`` for more information.
 
 [https://github.com/IkeyBenz/Code-Review](https://github.com/IkeyBenz/Code-Review)
 
