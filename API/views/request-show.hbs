@@ -82,7 +82,7 @@
                     lineNumbers: true,
                     theme: 'material',
                     mode: $('#language-mode').val()
-                })
+                });
             </script>
             {{/ifEquals}}
 
@@ -106,6 +106,9 @@
 <script>
 
     $(document).ready(function () {
+
+        codeView.setSize("100%", "600");
+
         codeView.on("change", (obj) => {
             if ($('#send-feedback-btn').prop('disabled') == true) {
                 $('#send-feedback-btn').attr('disabled', false).removeClass('disabled');
