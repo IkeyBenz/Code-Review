@@ -1,5 +1,5 @@
 <input type="hidden" id="language-mode" value="{{request.language}}">
-<input type="hidden" id="code-readonly" value="{{#ifEquals request.status "reviewed"}}true{{else}}false{{/ifEquals}}">
+<input type="hidden" id="code-readonly" value="{{#ifEquals request.status "Reviewed"}}true{{else}}false{{/ifEquals}}">
 
 <textarea id="request-code" class="d-none">{{request.cr_request}}</textarea>
 <textarea id="response-code" class="d-none">{{request.cr_response}}</textarea>
@@ -46,7 +46,7 @@
                         You: {{else}}{{../request.answerer.name}}:
                         {{/ifEquals}}
                         {{#ifEquals request.status "Reviewed"}}
-                        (Reviewed {{../request.date_responded}})
+                        (Reviewed <span class="date">{{../request.date_responded}}</span>)
                         {{else}}{{#ifEquals ../request.status "Opened"}}
                         (Opened <span class="date">{{../request.date_opened}}</span>)
                         {{else}}
@@ -72,7 +72,11 @@
                 </script>
             </div>
             {{else}}
-            <textarea id="r-code" name="cr_request">{{../request.cr_request}}</textarea>
+            {{#ifEquals ../request.answerer._id @root/authenticatedUser._id}}
+            <textarea name="cr_response" id="r-code">{{../request.cr_response}}</textarea>
+            {{else}}
+            <textarea name="cr_request" id="r-code">{{../request.cr_request}}</textarea>
+            {{/ifEquals}}
             <script>
                 const codeView = CodeMirror.fromTextArea(document.getElementById('r-code'), {
                     lineNumbers: true,

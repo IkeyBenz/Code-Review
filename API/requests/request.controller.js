@@ -9,7 +9,6 @@ module.exports = {
   },
 
   CreateNewRequest: async (req, res) => {
-    console.log(req.body);
     let answerer;
     try {
       answerer = await User.findOne({ email: req.body.answerer });
@@ -46,7 +45,7 @@ module.exports = {
       const isAsker = String(request.asker._id) === String(req.user._id);
       const isAnswerer = String(request.answerer._id) === String(req.user._id);
       if (isAsker || isAnswerer) {
-        if (isAnswerer && request.status !== 'Opened') {
+        if (isAnswerer && request.status === 'Unopened') {
           request.status = 'Opened';
           request.date_opened = Date.now();
           await request.save();
@@ -85,6 +84,7 @@ module.exports = {
         // If the update contains a response from the answerer, mark the status of
         // this request 'reviewed'
         if (req.body.cr_response) {
+          console.log('I reviewed this!');
           request.status = 'Reviewed';
           request.date_responded = Date.now();
           await request.save();
