@@ -11,12 +11,9 @@ express()
     defaultLayout: 'main',
     extname: 'hbs',
     helpers: {
-      ifEquals: (val1, val2, opts) => {
-        console.log(val1, val2);
-        return (String(val1) === String(val2))
-          ? opts.fn(this)
-          : opts.inverse(this);
-      },
+      ifEquals: (val1, val2, opts) => ((String(val1) === String(val2))
+        ? opts.fn(this)
+        : opts.inverse(this)),
     },
   }))
   .set('view engine', 'hbs')
