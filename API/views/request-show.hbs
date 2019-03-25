@@ -1,3 +1,10 @@
+<input type="hidden" id="language-mode" value="{{request.language}}">
+<input type="hidden" id="code-readonly" value="{{#ifEquals request.status "reviewed"}}true{{else}}false{{/ifEquals}}">
+
+<textarea id="request-code" class="d-none">{{request.cr_request}}</textarea>
+<textarea id="response-code" name="cr_response" class="d-none">{{request.cr_response}}</textarea>
+
+
 <div class="container-fluid">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -50,13 +57,37 @@
                     </p>
                 </div>
             </div>
+            {{#ifEquals request.status "Reviewed"}}
             <div id="code-differences">
-
+                <script>
+                    const codeView = CodeMirror.MergeView(document.getElementById('code-differences'), {
+                        value: $('#request-code').text(),
+                        origLeft: $('#response-code').text() != '' ? $('#response-code').text() : $('#request-code').text(),
+                        origRight: null,
+                        mode: $('#language-mode').val(),
+                        highlightDifferences: true,
+                        connect: 'align',
+                        collapseIdentical: false,
+                        showDifferences: true,
+                        theme: 'material'
+                    });
+                </script>
             </div>
+            {{else}}
+            <textarea id="r-code" name="cr_request">{{../request.cr_request}}</textarea>
+            <script>
+                const codeView = CodeMirror.fromTextArea(document.getElementById('r-code'), {
+                    lineNumbers: true,
+                    theme: 'material',
+                    mode: $('#language-mode').val()
+                })
+            </script>
+            {{/ifEquals}}
+
         </div>
 
         <div class="card-footer">
-            {{#ifEquals request.status "reviewed"}}
+            {{#ifEquals request.status "Reviewed"}}
             <button class="btn btn-success" type="submit">Archive</button>
             {{else}}
             <button id="send-feedback-btn" type="submit" disabled="true" class="btn btn-success disabled">
@@ -68,28 +99,18 @@
         </div>
     </form>
 
-    <input type="hidden" id="language-mode" value="{{request.language}}">
-    <input type="hidden" id="code-readonly"
-        value="{{#ifEquals request.status "reviewed"}}true{{else}}false{{/ifEquals}}">
-
-    <textarea id="request-code" class="d-none">{{request.cr_request}}</textarea>
-    <textarea id="response-code" name="cr_response" class="d-none">{{request.cr_response}}</textarea>
-
 </div>
-
 
 <script>
 
-    const mergeView = CodeMirror.MergeView(document.getElementById('code-differences'), {
-        value: $('#request-code').text(),
-        origLeft: $('#response-code').text() != '' ? $('#response-code').text() : $('#request-code').text(),
-        origRight: null,
-        mode: $('#language-mode').val(),
-        highlightDifferences: true,
-        connect: 'align',
-        collapseIdentical: false,
-        showDifferences: true,
-        theme: 'material'
+    $(document).ready(function () {
+        codeView.on("change", (obj) => {
+            if ($('#send-feedback-btn').prop('disabled') == true) {
+                $('#send-feedback-btn').attr('disabled', false).removeClass('disabled');
+            } else {
+                $('#r-code').text(codeView.getValue());
+            }
+        });
     });
 
 </script>
