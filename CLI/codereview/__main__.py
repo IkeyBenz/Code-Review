@@ -1,6 +1,7 @@
 import sys
 
 from .commands import signin, sign_out, get_my_requests, create_code_review_request, open_dashboard
+from .color_scheme import colors
 
 commands = {
     'signin': signin,
@@ -24,14 +25,19 @@ def main():
 def describe():
     ''' Prints a description of the code-review cli and its usage. '''
     print('''
-    Hello, this is the code-review CLI.
+    {header}======= Code-Review Command Line Interface ======{norm}\n
     Usage:
-        code-review signin: Signs you in.
-        code-review signout: Signs you out.
-        code-review status: Displays updates about your current review requests.
-        code-review request: Asks for an email address, file path, subject, and language. Creates a 'code-review-request'.
-        code-review open: Launches the user dashboard on code-review.com in your default browser
-    ''')
+        {blue}codereview{norm} {green}{bold}signin{norm}: {yellow}Signs you in{norm}.
+
+        {blue}codereview{norm} {green}{bold}signout{norm}: {yellow}Signs you out{norm}.
+
+        {blue}codereview{norm} {green}{bold}status{norm}: {yellow}Displays updates about your current review requests{norm}.
+
+        {blue}codereview{norm} {green}{bold}request{norm}: {yellow}Asks for an email address, file path, and a subject{norm} 
+                            {yellow}Creates a 'code-review-request'{norm}.
+
+        {blue}codereview{norm} {green}{bold}open{norm}: {yellow}Launches the user dashboard on our website in your default browser{norm}.
+    '''.format(**colors))
 
 if __name__ == '__main__':
     main()
