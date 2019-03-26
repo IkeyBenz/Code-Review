@@ -8,9 +8,18 @@ from .reuqest_formatter import format_requests
 API_URL = "https://code-review-api1.herokuapp.com"
 COOKIE_FILE_PATH = os.path.expanduser("~/code-review_data.pickle")
 
+commands_dict = {
+    'signin': signin,
+    'signout': sign_out,
+    'status': get_my_requests,
+    'request': create_code_review_request,
+    'open': open_dashboard
+}
+
+
 def signin():
     ''' Gets email & password from user, sends post request to API_URL + /signin, stores cookies in COOKIE_FILE_PATH '''
-    
+
     res = requests.post(API_URL + '/signin', data=json.dumps({
         "email": input("Email: "),
         "password": input("Password: ")
@@ -42,7 +51,7 @@ def get_stored_JWT():
 
         with open(COOKIE_FILE_PATH, "rb") as f:
             return dict(pickle.load(f))['code-review']
-    
+
     return None
 
 
@@ -53,13 +62,13 @@ def sign_out():
         os.remove(COOKIE_FILE_PATH)
 
     print("You have been signed out of code-review.")
-    
+
 
 def get_my_requests():
-    
+
     if user_is_signed_in():
-        
-        cookies = { 'code-review': get_stored_JWT() }
+
+        cookies = {'code-review': get_stored_JWT()}
         res = requests.get(API_URL + '/my-requests', cookies=cookies)
         body = json.loads(res.text)
 
@@ -67,7 +76,6 @@ def get_my_requests():
 
     else:
         print("You are not signed in. Run `codereview signin` to sign in.")
-
 
 
 def create_code_review_request():
@@ -81,7 +89,7 @@ def create_code_review_request():
 
         with open(filepath, "r") as f:
             code = f.read()
-        
+
         d = json.dumps({
             'cr_request': code,
             'answerer': input("Email address of responder: "),
@@ -89,8 +97,9 @@ def create_code_review_request():
             'language': get_langauge_from_extention(extention)
         })
 
-        cookies = { 'code-review': get_stored_JWT() }
-        res = requests.post(API_URL + '/requests', cookies=cookies, data=d, headers={'content-type': 'application/json'})
+        cookies = {'code-review': get_stored_JWT()}
+        res = requests.post(API_URL + '/requests', cookies=cookies,
+                            data=d, headers={'content-type': 'application/json'})
         body = json.loads(res.text)
 
         if 'success' in body:
@@ -112,7 +121,7 @@ def _get_valid_filepath():
         print("Invalid Filepath:", path)
         return _get_valid_filepath()
 
+
 def open_dashboard():
     dashboard_url = API_URL + '/dashboard'
     os.system("open " + dashboard_url)
-    
