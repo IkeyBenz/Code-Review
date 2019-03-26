@@ -73,7 +73,7 @@
             </div>
             {{else}}
             {{#ifEquals ../request.answerer._id @root/authenticatedUser._id}}
-            <textarea name="cr_response" id="r-code">{{../request.cr_response}}</textarea>
+            <textarea name="cr_response" id="r-code">{{../request.cr_request}}</textarea>
             {{else}}
             <textarea name="cr_request" id="r-code">{{../request.cr_request}}</textarea>
             {{/ifEquals}}
@@ -112,9 +112,8 @@
         codeView.on("change", (obj) => {
             if ($('#send-feedback-btn').prop('disabled') == true) {
                 $('#send-feedback-btn').attr('disabled', false).removeClass('disabled');
-            } else {
-                $('#r-code').text(codeView.getValue());
             }
+            $('#r-code').text(codeView.getValue());
         });
     });
 

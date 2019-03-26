@@ -12,7 +12,6 @@ module.exports = {
     let answerer;
     try {
       answerer = await User.findOne({ email: req.body.answerer });
-      console.log(answerer);
     } catch (error) {
       // If there is no user, send an email to `email` explaining that they should sign
       // up for code-review in order to respond to this request for code-review.
@@ -84,7 +83,6 @@ module.exports = {
         // If the update contains a response from the answerer, mark the status of
         // this request 'reviewed'
         if (req.body.cr_response) {
-          console.log('I reviewed this!');
           request.status = 'Reviewed';
           request.date_responded = Date.now();
           await request.save();
@@ -96,7 +94,6 @@ module.exports = {
           await request.save();
 
           if (request.status === 'Opened') {
-            console.log("We're editing the status!");
             request.status = 'Unopened';
             request.date_opened = null;
             await request.save();
