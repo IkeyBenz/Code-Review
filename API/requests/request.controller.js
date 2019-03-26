@@ -1,6 +1,7 @@
 const Request = require('./request.model');
 const User = require('../users/user.model');
 
+// How do i do the new export??
 module.exports = {
 
   GetMyRequests: async (req, res) => {

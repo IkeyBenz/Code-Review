@@ -8,14 +8,6 @@ from .reuqest_formatter import format_requests
 API_URL = "https://code-review-api1.herokuapp.com"
 COOKIE_FILE_PATH = os.path.expanduser("~/code-review_data.pickle")
 
-commands_dict = {
-    'signin': signin,
-    'signout': sign_out,
-    'status': get_my_requests,
-    'request': create_code_review_request,
-    'open': open_dashboard
-}
-
 
 def signin():
     ''' Gets email & password from user, sends post request to API_URL + /signin, stores cookies in COOKIE_FILE_PATH '''
@@ -125,3 +117,12 @@ def _get_valid_filepath():
 def open_dashboard():
     dashboard_url = API_URL + '/dashboard'
     os.system("open " + dashboard_url)
+
+
+commands_dict = {
+    'signin': signin,
+    'signout': sign_out,
+    'status': get_my_requests,
+    'request': create_code_review_request,
+    'open': open_dashboard
+}
