@@ -1,16 +1,23 @@
 import sys
 
-from .commands import commands_dict
+from .commands import signin, sign_out, get_my_requests, create_code_review_request, open_dashboard
 from .color_scheme import colors
 
+commands = {
+    'signin': signin,
+    'signout': sign_out,
+    'status': get_my_requests,
+    'request': create_code_review_request,
+    'open': open_dashboard
+}
 
 def main():
     args = sys.argv[1:]
 
     if len(args) == 0:
         return describe()
-    if args[0] in commands_dict:
-        commands_dict[args[0]]()
+    if args[0] in commands:
+        commands[args[0]]()
     else:
         print("That is not a valid command.")
 
@@ -32,6 +39,6 @@ def describe():
         {blue}codereview{norm} {green}{bold}open{norm}: {yellow}Launches the user dashboard on our website in your default browser{norm}.
     '''.format(**colors))
 
-
 if __name__ == '__main__':
     main()
+
