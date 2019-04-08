@@ -16,6 +16,7 @@ def main():
 
 
 def describe():
+  # ink - cli in react
     ''' Prints a description of the code-review cli and its usage. '''
     print('''
     {header}======= Code-Review Command Line Interface ======{norm}\n
