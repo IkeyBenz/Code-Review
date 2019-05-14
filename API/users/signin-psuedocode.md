@@ -1,13 +1,12 @@
-users > user.controller > signup()
+## users > user.controller > signup()
 
-Signup Process:
+### Signup Process:
 
-  Before:
-    user submits the signup form, with their email, password, and name
+  **Before**: User submits the signup form, with their email, password, and name
 
-  Check if user with (email) already exists
+  1. Check if user with (email) already exists
 
-  If user exists, try to handle signin process:
+  2. If user exists, try to handle signin process:
 
     Check if given password matches found user’s password
 
